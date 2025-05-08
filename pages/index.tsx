@@ -52,6 +52,14 @@ export default function Home() {
   {message && (
     <p className="mt-4 text-green-600 text-sm">{message}</p>
   )}
+
+  {message && (
+    <img 
+    src={message}
+    alt="Detected Image"
+    className="mt-6  max-w-md rounded shadow-md"
+    />
+  )}
 </main>
   );
 }

@@ -1,3 +1,4 @@
+# server เรียกใช้ API
 from flask import Flask, request, jsonify, send_from_directory
 from ultralytics import YOLO
 import os
@@ -11,8 +12,8 @@ CORS(app)
 model = YOLO("yolov8m.pt")
 
 
-os.makedirs("uploads", exist_ok=True)
-os.makedirs("runs/detect/predict", exist_ok=True)
+os.makedirs("uploads", exist_ok=True)#เก็บภาพก่อน detect
+os.makedirs("runs/detect/predict", exist_ok=True)#เก็บภาพหลัง detect
 
 @app.route('/detect', methods=['POST'])
 def detect():
@@ -42,6 +43,7 @@ def detect():
         
         results = model(file_path, save=True, project="runs/detect", name="predict", exist_ok=True)
 
+        # เตรียมภาพส่งกลับ client
         output_path = f"runs/detect/predict/{new_filename}"
         if not os.path.exists(output_path):
             return jsonify({"error": "Output file not found"}), 500
@@ -63,3 +65,4 @@ def serve_detected_image(filename):
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)
+            
